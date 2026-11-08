@@ -19,7 +19,8 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);paddi
 .bagb{right:1%;bottom:2.5%;padding:4px 6px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px}
 .bagb small{display:block;color:var(--muted);font-size:11px}
 .bars{left:50%;bottom:calc(2.5% + var(--s) + 14px);transform:translateX(-50%);padding:4px 10px 4px 6px;display:grid;grid-template-columns:auto repeat(3,1fr);column-gap:7px;row-gap:3px;align-items:center;width:calc(8 * var(--s) + 52px);box-sizing:border-box;pointer-events:none;background:linear-gradient(#6b6f76,#4a4d53);border:2px solid #26272a;border-radius:3px;box-shadow:inset 0 0 0 1px #8f939b,0 2px 0 #000a}
-.bars::before,.bars::after{content:'';position:absolute;top:3px;width:3px;height:3px;background:#26272a;border-radius:50%;box-shadow:0 calc(100% - 0px) 0 #26272a}.bars::before{left:3px}.bars::after{right:3px}
+.bars.p{background:none;border:0;box-shadow:none;padding:0;row-gap:2px;column-gap:5px}.bars .bar{height:13px;line-height:13px;font-size:10px}.bars .bar i{background:rgba(20,15,10,.72);box-shadow:0 1px 2px #000c}.bars .lvb{width:28px;height:28px;font-size:13px}.bars .xpb{height:7px;line-height:7px;font-size:7px}.bars .xpb i{background:rgba(20,15,10,.72)}
+.bars::before,.bars::after{display:none;content:'';position:absolute;top:3px;width:3px;height:3px;background:#26272a;border-radius:50%;box-shadow:0 calc(100% - 0px) 0 #26272a}.bars::before{left:3px}.bars::after{right:3px}
 .lvb{grid-row:1/3;width:34px;height:34px;border-radius:50%;background:#7a5bd0;border:2px solid #26272a;box-shadow:inset 0 0 0 1px #b48cff;display:grid;place-items:center;align-content:center;line-height:1;color:#fff;text-shadow:0 1px 0 #000;font-size:15px}.lvb small{font-size:7px;margin-bottom:1px}
 .bar svg.bi{position:absolute;left:3px;top:2px;width:11px;height:11px;z-index:2}
 .xpb{grid-column:2/-1;position:relative;height:9px;font-size:8px;line-height:9px;color:#f3e7cf;text-shadow:0 1px 0 #000}.xpb i{position:absolute;inset:0;background:#2a2218;border-radius:2px;overflow:hidden}.xpb i::after{content:'';position:absolute;inset:0;width:var(--v,0%);background:repeating-linear-gradient(90deg,#b48cff 0 10px,#7a5bd0 10px 12px)}.xpb span{position:absolute;left:4px;top:0;z-index:1}
@@ -65,7 +66,21 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);paddi
 .fs{display:none;position:absolute;left:50%;top:2%;transform:translateX(-50%);font:600 11px var(--disp);color:var(--fg);background:rgba(23,18,14,.75);border:1px solid #5a4630;border-radius:4px;padding:3px 8px}
 .fsoff .fs{display:none!important}
 .clockp .basu{display:block;font:11px var(--disp);color:#e8b46a;text-align:right;grid-column:1/-1}.bmapa{position:absolute;right:1%;bottom:calc(2.5% + 50px);font:600 11px var(--disp);color:var(--fg);background:rgba(23,18,14,.8);border:1px solid #5a4630;border-radius:4px;padding:4px 9px;cursor:pointer;z-index:5}
-.stage.open .bmapa{display:none}.bpj{bottom:calc(2.5% + 82px)}@media (pointer:coarse){.bmapa{bottom:auto;top:calc(2% + 62px);font-size:12px;padding:6px 10px}.bpj{top:calc(2% + 96px)}}.perso{display:grid;grid-template-columns:1fr 1fr;width:min(96%,760px)}.perso .mh{grid-column:1/-1}.bpj.pts::after,.lvb.pts::after{content:'!';position:absolute;right:-6px;top:-8px;background:#d9573f;color:#fff;border-radius:50%;width:16px;height:16px;font-size:11px;display:grid;place-items:center}.lvb{position:relative;cursor:pointer}.perso{max-height:86%;overflow:auto}
+.stage.open .bmapa{display:none}.bpj{bottom:calc(2.5% + 82px)}@media (pointer:coarse){.bmapa{bottom:auto;top:calc(2% + 62px);font-size:12px;padding:6px 10px}.bpj{top:calc(2% + 96px)}}.perso.p{background:rgba(20,15,11,.97)}.perso{display:grid;grid-template-columns:1fr 1.15fr;width:min(96%,780px);gap:10px;font-family:var(--body)}.perso .mh{grid-column:1/-1}
+.pjh{display:flex;gap:10px;align-items:center;background:#0006;border:1px solid #4b3a27;border-radius:5px;padding:8px}.pjh .lv{width:46px;height:46px;border-radius:50%;background:#7a5bd0;border:2px solid #26272a;box-shadow:inset 0 0 0 1px #b48cff;display:grid;place-items:center;font:600 20px var(--disp);color:#fff;flex:none}
+.pjh .tx{flex:1;min-width:0}.pjh b{font:600 14px var(--disp);color:var(--fg)}.pjh small{display:block;color:var(--muted);font-size:12px}
+.xbar{height:7px;background:#2a2218;border-radius:3px;overflow:hidden;margin-top:4px}.xbar i{display:block;height:100%;width:var(--v);background:var(--c,#b48cff)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}.chip{font:600 11px var(--disp);background:#d9573f;color:#fff;border-radius:10px;padding:2px 8px}.chip.v{background:#3d7a4a}
+.sec{font:600 12px var(--disp);color:var(--accent);margin:10px 0 4px;letter-spacing:.04em;text-transform:uppercase}
+.at{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:6px 8px;border-radius:5px;background:#0004;margin-bottom:4px}
+.at .nm{font:600 14px var(--disp);color:#f3e7cf}.at .nm em{font-style:normal;color:var(--accent);margin-left:6px}.at .ef{grid-column:1;font-size:12px;color:#c9b99a}
+.pips{display:flex;gap:2px;grid-column:1}.pips i{width:9px;height:6px;background:#3a2f24;border-radius:1px}.pips i.on{background:var(--accent)}
+.at button,.pk button{grid-row:1/4;grid-column:2;width:36px;height:36px;font:600 18px var(--disp);background:#d9573f;color:#fff;border:0;border-radius:6px;cursor:pointer;box-shadow:0 2px 0 #7a2a1c}
+.hb{background:#0004;border-radius:5px;padding:7px 8px;margin-bottom:6px}.hb .t{display:flex;justify-content:space-between;align-items:baseline}.hb .t b{font:600 14px var(--disp);color:#f3e7cf}.hb .t span{font:600 12px var(--disp);color:#b48cff}
+.hb small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.pk{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;margin-top:5px;padding:4px 6px;border-left:2px solid #5a4630}.pk .nm{font-size:13px;color:#f3e7cf}.pk .nm em{font-style:normal;color:var(--accent);letter-spacing:1px;margin-left:5px}.pk .ef{font-size:11px;color:#a8977a}
+.pk.lock{opacity:.55}.pk.lock .nm::before{content:'🔒 ';font-size:10px}.pk button{width:30px;height:30px;font-size:15px;grid-row:1/3}
+@media (max-width:700px){.perso{grid-template-columns:1fr}}.bpj.pts::after,.lvb.pts::after{content:'!';position:absolute;right:-6px;top:-8px;background:#d9573f;color:#fff;border-radius:50%;width:16px;height:16px;font-size:11px;display:grid;place-items:center}.lvb{position:relative;cursor:pointer}.perso{max-height:86%;overflow:auto}
 .mapa{top:5%;width:min(96%,620px);max-height:90%}.mapa canvas{width:100%;image-rendering:pixelated;border:1px solid #4b3a27;border-radius:4px;background:#120e0b;touch-action:none}
 .mapa .mtabs{display:flex;gap:4px;flex-wrap:wrap}.mapa .mtabs button.on{background:#7a5a30;border-color:#c79a52}
 .mapa .mley{display:flex;gap:10px;flex-wrap:wrap;font:11px var(--body);color:var(--muted);align-items:center}.mapa .mley i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
@@ -109,7 +124,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);paddi
           <div class="bol prueba"><h4>Para probar</h4><div class="acts"><button id="tclima">Cambiar clima</button><button id="thora">+2 horas</button><button id="tnoche">Noche</button><button id="trata">Rata</button><button id="mute">Sonido: sí</button></div></div></div></div>
     </div>
     <div class="p tienda" id="tienda" hidden><div class="mh"><span>Banco de herramientas</span><button id="tcerrar">Cerrar</button></div><div id="tlist"></div></div>
-    <div class="p tienda perso" id="perso" hidden><div class="mh"><span>Personaje</span><button id="pcerrar">Cerrar</button></div><div class="bol hab" id="pj"></div><div class="bol hab" id="hab"></div></div>
+    <div class="p tienda perso" id="perso" hidden><div class="mh"><span>Personaje</span><button id="pcerrar">Cerrar</button></div><div id="pj"></div><div id="hab"></div></div>
     <div class="p tienda mapa" id="mapa" hidden><div class="mh"><span id="mtit">Mapa</span><button id="mcerrar">Cerrar</button></div><div class="mtabs" id="mtabs"></div><canvas id="mcv" width="600" height="340"></canvas>
       <div class="mley"><span><i style="background:#f5d24a"></i>Poca basura</span><span><i style="background:#e8742c"></i>Bastante</span><span><i style="background:#c42a1c"></i>Mucha</span><span><i style="background:#120e0b;border:1px solid #4b3a27"></i>Sin explorar</span><span>● vos · $ venta · ⌂ cabaña · ⚒ mejoras</span></div></div>
     <div class="p tienda venta" id="venta" hidden><div class="mh"><span>Mostrador · La Negra</span><button id="vcerrar">Cerrar</button></div><div id="vlist"></div></div>
@@ -430,9 +445,9 @@ function atacar(){if(P.act||wCd>0||P.reload>0)return;const a=ARMAS[P.w];if(P.en<
 const TALA={motosierra:1.4,hacha:4,cuchillo:.6};const arboles=[];
 function talar(hx,hy){let best=null,bd=40;for(const a of arboles){if(a.cay)continue;const d=Math.hypot(a.x-hx,a.y-8-hy);if(d<bd){bd=d;best=a}}if(!best)return;
   const w=TALA[P.w];if(!w){if(!talar.av||performance.now()-talar.av>4000){talar.av=performance.now();showCard('Con esto no talás','Usá motosierra, hacha o cuchillo')}return}
-  best.hp-=w*(1+(nivel(HAB.len.xp)-1)*.08)*(1+(ATR.fue.v-3)*.05);best.sh=.18;sThud();for(let i=0;i<3;i++)astillas.push({x:best.x+(Math.random()-.5)*8,y:best.y-14,vx:(Math.random()-.5)*60,vy:-30-Math.random()*40,t:0});
+  best.hp-=w*(1+(nivel(HAB.len.xp)-1)*.08+rango('hachazo')*.15)*(1+(ATR.fue.v-3)*.05);best.sh=.18;sThud();for(let i=0;i<3;i++)astillas.push({x:best.x+(Math.random()-.5)*8,y:best.y-14,vx:(Math.random()-.5)*60,vy:-30-Math.random()*40,t:0});
   if(best.hp<=0){best.cay=.001;best.dir=P.x<best.x?1:-1;const pr=best.pr;pr.cut=T0.dia;if(pr.si!=null&&SOL[pr.si]){pr.sol0=SOL[pr.si].slice();SOL[pr.si]=[0,0,0,0]}
-    const lv=nivel(HAB.len.xp),n=2+((lv-1)>>0)+(Math.random()<.4?1:0);setTimeout(()=>{if(meter('madera',n)){showCard('¡Árbol talado!','+'+n+' de leña'+(lv>1?' (Leñador '+lv+')':''));pop('+'+n+' leña',best.x,best.y-50)}else showCard('Mochila llena','No te entra la leña');ganarXP('len',30);sGet(4)},650)}}
+    const lv=nivel(HAB.len.xp),n=2+((lv-1)>>0)+rango('astillero')+(Math.random()<.4?1:0);setTimeout(()=>{if(meter('madera',n)){showCard('¡Árbol talado!','+'+n+' de leña'+(lv>1?' (Leñador '+lv+')':''));pop('+'+n+' leña',best.x,best.y-50)}else showCard('Mochila llena','No te entra la leña');ganarXP('len',30);sGet(4)},650)}}
 const astillas=[];const astG=new PIXI.Graphics();
 function updTala(dt){astG.clear();astG.zIndex=9e5-1;for(const a of arboles){const sp=a.sp;if(a.sh>0){a.sh-=dt;sp.x=a.x+Math.sin(performance.now()/18)*2}else if(!a.cay)sp.x=a.x;
     if(a.cay){a.cay+=dt;const k=Math.min(1,a.cay/.6);sp.rotation=a.dir*k*k*1.5;if(a.cay>.8)sp.alpha=Math.max(0,1-(a.cay-.8)/.5);if(a.cay>1.3&&sp.visible){sp.visible=false;a.toc.visible=true}}}
@@ -565,8 +580,7 @@ function beneficio(k,l){if(k==='rec')return 'Las herramientas juntan '+Math.roun
 function bonusRec(){return (1+(nivel(HAB.rec.xp)-1)*.1)*(1+(ATR.fue.v-3)*.05)*(1+rango('barrida')*.12)}
 function bonusCom(){return Math.floor((nivel(HAB.com.xp)-1)/3)+Math.floor((ATR.fue.v-3)/2)+(P.w?0:rango('puno'))}
 function renderXP(){const k=xpUlt,h=HAB[k],[l,f]=prog(h.xp);const b=$i('xpb');if(!b)return;try{$i('lvn').textContent=nivelPJ()}catch(e){};$i('xpi').style.setProperty('--v',(f*100)+'%');$i('xpt').textContent=h.n+' '+l+(l>=5?' · '+h.t5:'');
-  const hb=$i('hab');if(hb){hb.innerHTML='<h4>Habilidades</h4>';for(const kk in HAB){const x=HAB[kk],[ll,ff]=prog(x.xp);const d=document.createElement('div');const a=document.createElement('span');a.textContent=x.n+(ll>=5?' · '+x.t5:'');const c=document.createElement('span');c.textContent='Nivel '+ll;const i=document.createElement('i');i.style.setProperty('--v',(ff*100)+'%');d.append(a,c,i);hb.appendChild(d)}
-    const n=document.createElement('div');n.style.cssText='display:block;font-size:11px';n.textContent='Leñador sube talando árboles con motosierra, hacha o cuchillo. Domador se sube domando perros y aguiluchos (todavía no está).';hb.appendChild(n)}}
+  if(!$i('perso').hidden)renderPJ();}
 // ---------- banco de herramientas ----------
 const MEJORAS=[{id:'rastrillo',n:'Rastrillo ancho',d:'El rastrillo junta 50% más y llega más lejos',p:8000,f:()=>{TOOLS[1].max=Math.round(TOOLS[1].max*1.5);TOOLS[1].r+=10;TOOLS[1].n='Rastrillo ancho'}},
  {id:'horquilla',n:'Horquilla de 6 dientes',d:'Junta 50% más bolsas por golpe',p:8000,f:()=>{TOOLS[2].max=Math.round(TOOLS[2].max*1.5);TOOLS[2].r+=8;TOOLS[2].n='Horquilla de 6 dientes'}},
@@ -576,7 +590,7 @@ const MEJORAS=[{id:'rastrillo',n:'Rastrillo ancho',d:'El rastrillo junta 50% má
 const comprado={};
 // ---------- nivel del personaje, atributos y ventajas ----------
 const ATR={fue:{n:'Fuerza',v:3,d:'Más daño y más cosas por golpe'},res:{n:'Resistencia',v:5,d:'+20 kg de carga por punto'},agi:{n:'Agilidad',v:3,d:'Caminás y corrés más rápido'},cha:{n:'Chamullo',v:2,d:'Te pagan mejor en la planta'},int:{n:'Inteligencia',v:3,d:'Ganás más experiencia'}};
-const PERK={rec:[{id:'brazo',n:'Brazo largo',d:'Más alcance al juntar'},{id:'ojo',n:'Ojo fino',d:'Encontrás más objetos'},{id:'barrida',n:'Barrida',d:'Más cosas por golpe'}],
+const PERK={len:[{id:'hachazo',n:'Hachazo',d:'Talás un 15% más rápido por punto'},{id:'astillero',n:'Ojo de leñador',d:'+1 leña por árbol por punto'}],rec:[{id:'brazo',n:'Brazo largo',d:'Más alcance al juntar'},{id:'ojo',n:'Ojo fino',d:'Encontrás más objetos'},{id:'barrida',n:'Barrida',d:'Más cosas por golpe'}],
  com:[{id:'puno',n:'Puño pesado',d:'+1 de daño a puño limpio'},{id:'pulso',n:'Pulso firme',d:'Las armas a distancia llegan más lejos'},{id:'piel',n:'Piel dura',d:'Te lastiman menos'}]};
 const RANGO={};let ptsA=0,ptsS=0;
 function xpTotal(){let t=0;for(const k in HAB)t+=HAB[k].xp;return t}
@@ -585,7 +599,22 @@ let nivelAnt=1;
 function chequearNivelPJ(){const l=nivelPJ();if(l>nivelAnt){const n=l-nivelAnt;nivelAnt=l;ptsA+=2*n;ptsS+=n;showCard('¡Subiste a nivel '+l+'!','Tenés '+ptsA+' puntos de atributo y '+ptsS+' de habilidad: tocá Personaje');sGet(8);renderPJ()}}
 function aplicarAtr(){CAP=ATR.res.v*KG_POR_RES+(comprado.arpillera?20:0)+(comprado.carretilla?60:0);hud()}
 function rango(id){return RANGO[id]||0}
-function renderPJ(){const b=$i('pj');if(!b)return;for(const id of ['bpj','lvb'])$i(id).classList.toggle('pts',ptsA+ptsS>0);b.innerHTML='';const h=document.createElement('h4');h.textContent='Nivel '+nivelPJ()+(ptsA?' · '+ptsA+' puntos de atributo':'');b.appendChild(h);
+function renderPJ(){const b=$i('pj');if(!b)return;for(const id of ['bpj','lvb'])$i(id).classList.toggle('pts',ptsA+ptsS>0);b.innerHTML='';
+  const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+  const l=nivelPJ(),tot=xpTotal(),a0=l>1?60*Math.pow(l-1,1.6):0,a1=60*Math.pow(l,1.6);
+  const h=el('div','pjh'),lv=el('div','lv',l),tx=el('div','tx');tx.append(el('b',null,'Nivel '+l),el('small',null,Math.round(tot-a0)+' / '+Math.round(a1-a0)+' de experiencia para el nivel '+(l+1)));const xb=el('div','xbar');const xi=el('i');xi.style.setProperty('--v',Math.min(100,(tot-a0)/(a1-a0)*100)+'%');xb.appendChild(xi);tx.appendChild(xb);
+  const ch=el('div','chips');if(ptsA)ch.appendChild(el('span','chip',ptsA+' de atributo'));if(ptsS)ch.appendChild(el('span','chip v',ptsS+' de ventaja'));if(!ptsA&&!ptsS)ch.appendChild(el('small',null,'Subí de nivel para ganar puntos'));tx.appendChild(ch);h.append(lv,tx);b.appendChild(h);
+  b.appendChild(el('div','sec','Atributos'));
+  const EF={fue:v=>'+'+((v-3)*5)+'% cosas por golpe y daño',res:()=>'Cargás hasta '+CAP+' kg',agi:v=>'+'+((v-3)*4)+'% de velocidad',cha:v=>'+'+((v-2)*5)+'% en lo que vendés',int:v=>'+'+((v-3)*5)+'% de experiencia'};
+  for(const k in ATR){const a=ATR[k];const d=el('div','at');const nm=el('div','nm',a.n);nm.appendChild(el('em',null,a.v));const pp=el('div','pips');for(let i=1;i<=10;i++)pp.appendChild(el('i',i<=a.v?'on':''));const ef=EF[k]?EF[k](a.v):'';d.append(nm,pp,el('div','ef',(ef&&!/^\+0%|^\+-/.test(ef)?ef+' · ':'')+a.d));
+    if(ptsA){const bt=el('button',null,'+');bt.title='Subir '+a.n;bt.onclick=e=>{e.stopPropagation();if(!ptsA)return;ptsA--;a.v++;aplicarAtr();sClick();renderPJ()};d.appendChild(bt)}b.appendChild(d)}
+  const hb=$i('hab');hb.innerHTML='';hb.appendChild(el('div','sec','Habilidades y ventajas'));
+  const COMO={rec:'Sube juntando basura',com:'Sube peleando',dom:'Sube domando perros y aguiluchos (pronto)',len:'Sube talando árboles con motosierra, hacha o cuchillo'};
+  for(const kk in HAB){const x=HAB[kk],[ll,ff]=prog(x.xp);const c=el('div','hb');const t=el('div','t');t.append(el('b',null,x.n+(ll>=5?' · '+x.t5:'')),el('span',null,'Nivel '+ll));const xb=el('div','xbar');const xi=el('i');xi.style.setProperty('--v',(ff*100)+'%');xb.appendChild(xi);c.append(t,xb,el('small',null,COMO[kk]||''));
+    for(const pk of (PERK[kk]||[])){const r=rango(pk.id),req=ll>=2;const d=el('div','pk'+(req?'':' lock'));const nm=el('div','nm',pk.n);nm.appendChild(el('em',null,'●'.repeat(r)+'○'.repeat(3-r)));d.append(nm,el('div','ef',req?pk.d:'Se desbloquea con '+x.n+' 2'));
+      if(req&&ptsS&&r<3){const bt=el('button',null,'+');bt.onclick=e=>{e.stopPropagation();if(!ptsS||r>=3)return;ptsS--;RANGO[pk.id]=r+1;sClick();renderPJ()};d.appendChild(bt)}c.appendChild(d)}
+    hb.appendChild(c)}}
+function renderPJ_viejo(){const b=$i('pj');if(!b)return;for(const id of ['bpj','lvb'])$i(id).classList.toggle('pts',ptsA+ptsS>0);b.innerHTML='';const h=document.createElement('h4');h.textContent='Nivel '+nivelPJ()+(ptsA?' · '+ptsA+' puntos de atributo':'');b.appendChild(h);
   for(const k in ATR){const a=ATR[k];const d=document.createElement('div');d.className='attr';const t=document.createElement('span');t.innerHTML='<b></b> <small></small>';t.querySelector('b').textContent=a.n+' '+a.v;t.querySelector('small').textContent=a.d;
     const bt=document.createElement('button');bt.textContent='+';bt.disabled=!ptsA;bt.onclick=e=>{e.stopPropagation();if(!ptsA)return;ptsA--;a.v++;aplicarAtr();sClick();renderPJ()};d.append(t,bt);b.appendChild(d)}
   const h2=document.createElement('h4');h2.textContent='Ventajas'+(ptsS?' · '+ptsS+' puntos':'');h2.style.marginTop='6px';b.appendChild(h2);
