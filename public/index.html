@@ -209,7 +209,7 @@ const CW=480,CH=272;let NCX=1,NCY=1;let chunks=[];
 const chunkL=new PIXI.Container();mapL.addChild(chunkL);
 const tall=new PIXI.Container();tall.sortableChildren=true;world.addChild(tall);
 const G=new Map(),GS=32;
-let holdM=0;const items=[];const mapTall=[];const npcSp=[];const quitados={};let SOL=[],casa=null,npcs=[];
+let holdM=0;const SOMB=new Set();const items=[];const mapTall=[];const npcSp=[];const quitados={};let SOL=[],casa=null,npcs=[];
 const propBase=A['props.png']?A['props.png'].baseTexture:null;const PTX={};for(const k in PR)PTX[k]=new PIXI.Texture(propBase,new PIXI.Rectangle(...PR[k]));
 const TCACHE={};
 function terrenoDeBaldosas(m){if(TCACHE[m.terreno])return TCACHE[m.terreno];const c=document.createElement('canvas');c.width=m.w;c.height=m.h;const g=c.getContext('2d');g.imageSmoothingEnabled=false;
@@ -231,7 +231,7 @@ function interiorCasa(r,pu){const w=r[2]-r[0],h=r[3]-r[1],c=document.createEleme
   return c}
 function armarMapa(){
   MANT.clear();mantoL.removeChildren();G.clear();items.length=0;chunkL.removeChildren().forEach(c=>c.destroy({children:true}));
-  for(const sp of mapTall){tall.removeChild(sp);sp.destroy()}mapTall.length=0;
+  for(const sp of mapTall){tall.removeChild(sp);sp.destroy()}mapTall.length=0;SOMB.clear();
   T=MX.tile;WW=MX.w;WH=MX.h;CELL=MX.cell;MS=MX.ms;
   terr.texture=MX.tgrid?terrenoDeBaldosas(MX):A[MX.terreno||'terreno.png'];snowG.width=WW;snowG.height=WH;capaMapa();pozo.visible=MAPA==='celda';
   NCX=Math.ceil(WW/CW);NCY=Math.ceil(WH/CH);chunks=[];for(let i=0;i<NCX*NCY;i++){const c=new PIXI.Container();chunks.push(c);chunkL.addChild(c)}
@@ -243,17 +243,17 @@ function armarMapa(){
     const s=new PIXI.Sprite(tex[i]);s.x=x;s.y=y;
     const flat=/^(Chapa|Colch|Cubierta)|muert|hinchada/.test(M.name[i]);if(cat==='grande'&&!flat){s.anchor.set(.5,.85);if(rot%2)s.scale.x=-1}else if(cat==='grande'){s.anchor.set(.5);s.rotation=((rot||(x*37+y*11)%360))*Math.PI/180}else{s.anchor.set(.5);s.rotation=(rot||0)*Math.PI/180}
     if(upz)s.tint=0xa49a90;
-    const it={s,x,y,cat,name:M.name[i],hp:cat==='grande'?(/Auto/.test(M.name[i])?8:3):1,alive:true,mk,ix};
+    const it={so:null,s,x,y,cat,name:M.name[i],hp:cat==='grande'?(/Auto/.test(M.name[i])?8:3):1,alive:true,mk,ix};
     if(mm)mm.n++;
     items.push(it);
-    if(cat==='grande'){s.zIndex=y;tall.addChild(s);mapTall.push(s)}else chunks[Math.min(NCX-1,(x/CW)|0)+Math.min(NCY-1,(y/CH)|0)*NCX].addChild(s);
+    if(cat==='grande'){s.zIndex=y;tall.addChild(s);mapTall.push(s);if(!flat){const w=s.texture.width,so=new PIXI.Graphics();so.beginFill(0x14100a,.26).drawEllipse(0,0,w*.42,Math.max(3,w*.12)).endFill();so.x=x;so.y=y+s.texture.height*.13;so.zIndex=-1e6;tall.addChild(so);mapTall.push(so);SOMB.add(so);it.so=so}}else chunks[Math.min(NCX-1,(x/CW)|0)+Math.min(NCY-1,(y/CH)|0)*NCX].addChild(s);
     const k=((x/GS)|0)+((y/GS)|0)*1000;(G.get(k)||G.set(k,[]).get(k)).push(it)});
   for(const m of MANT.values()){if(m.n0&&m.n/m.n0<=.3)m.s.visible=false}
   // objetos fijos del mapa (galpón, garita, pinos…) con sus paredes
   SOL=MX.solids||[];casa=null;for(const pr of (MX.props||[]))if(pr.n==='pino'&&pr.cut&&pr.si!=null&&SOL[pr.si]&&SOL[pr.si][2]){pr.sol0=SOL[pr.si].slice();SOL[pr.si]=[0,0,0,0]}npcs=MX.npcs||[];
   const SIN_SOMBRA=/^(galpon|garita|casilla|cinta|alambrado|porton|cartel_planta|pizarron|d_yuyos|d_container|d_escombro)$/;
   npcSp.length=0;arboles.length=0;if(!astG.parent)tall.addChild(astG);for(const pr of (MX.props||[])){const t=PTX[pr.n];if(!t)continue;if(pr.n==='pino'){if(pr.cut&&T0.dia-pr.cut>=3){pr.cut=0;if(pr.sol0&&pr.si!=null)SOL[pr.si]=pr.sol0}}const corta=pr.n==='pino'&&pr.cut;const sp=new PIXI.Sprite(t);sp.anchor.set(.5,1);sp.x=pr.x;sp.y=pr.y;sp.zIndex=pr.z!=null?pr.z:pr.y;if(pr.flip)sp.scale.x=-1;tall.addChild(sp);mapTall.push(sp);if(pr.tag==='casa')casa={sp,dentro:[]};
-    if(!SIN_SOMBRA.test(pr.n)){const w=t.width,so=new PIXI.Graphics();const pino=pr.n==='pino';so.beginFill(0x14100a,pino?.32:.26).drawEllipse(0,0,w*(pino?.36:.42),Math.max(3,w*(pino?.11:.12))).endFill();so.x=pr.x;so.y=pr.y-(pino?5:2);so.zIndex=-1e6;tall.addChild(so);mapTall.push(so);if(pr.n==='pino'){sp._so=so;so.visible=!(pr.cut)}}
+    if(!SIN_SOMBRA.test(pr.n)){const w=t.width,so=new PIXI.Graphics();const pino=pr.n==='pino';so.beginFill(0x14100a,pino?.32:.26).drawEllipse(0,0,w*(pino?.36:.42),Math.max(3,w*(pino?.11:.12))).endFill();so.x=pr.x;so.y=pr.y-(pino?5:2);so.zIndex=-1e6;tall.addChild(so);mapTall.push(so);SOMB.add(so);if(pr.n==='pino'){sp._so=so;so.visible=!(pr.cut)}}
     if(pr.n==='pino'){const toc=new PIXI.Graphics();toc.beginFill(0x5a3a1e).drawEllipse(0,0,7,4).endFill().beginFill(0xc89a62).drawEllipse(0,-2,6,3).endFill();toc.x=pr.x;toc.y=pr.y-3;toc.zIndex=pr.y;toc.visible=!!corta;tall.addChild(toc);mapTall.push(toc);sp.visible=!corta;sp.anchor.set(.5,1);arboles.push({sp,toc,pr,x:pr.x,y:pr.y,hp:30,sh:0,cay:corta?9:0,dir:1})}
     if(/^npc/.test(pr.n)){sp.scale.set(NPCK)}if(/^npc/.test(pr.n))npcSp.push({sp,x0:pr.x,y0:pr.y,ph:Math.random()*6,tipo:/^npcN/.test(pr.n)?'cinta':(/encargada/.test(pr.n)?'mostr':'charla'),tx:pr.x,w:0})}
   for(const [x,y,i,rot] of (MX.deco||[])){const sp=new PIXI.Sprite(tex[i]);sp.anchor.set(.5);sp.x=x;sp.y=y;sp.rotation=rot*Math.PI/180;sp.zIndex=y-20;tall.addChild(sp);mapTall.push(sp)}
@@ -524,7 +524,7 @@ function updFuego(dt){fuegoG.clear();if(fuegoG.parent!==amb){amb.addChild(fuegoG
   const cl=T0.clima,llueve=cl==='Lluvia'||cl==='Nevando';fuegoT-=dt;
   if(fuegoT<=0){fuegoT=.25;for(const [k,c] of [...FUEGO]){const it=itemsCelda(c.cx,c.cy);
       if(it.length){c.i=Math.min(1,c.i+.08)}else c.i-=.06;if(llueve)c.i-=.05;if(CAPA[MAPA]&&CAPA[MAPA].nieve>.3)c.i-=.05;
-      c.t+=.25;if(c.i>.55&&it.length&&Math.random()<.18){const v=it[Math.random()*it.length|0];v.s.tint=0x2a2018;setTimeout(()=>{if(!v.alive)return;v.alive=false;(quitados[MAPA]||(quitados[MAPA]=new Set())).add(v.ix);if(v.s.parent)v.s.parent.removeChild(v.s);hud()},1200)}
+      c.t+=.25;if(c.i>.55&&it.length&&Math.random()<.18){const v=it[Math.random()*it.length|0];v.s.tint=0x2a2018;setTimeout(()=>{if(!v.alive)return;v.alive=false;if(v.so)v.so.visible=false;(quitados[MAPA]||(quitados[MAPA]=new Set())).add(v.ix);if(v.s.parent)v.s.parent.removeChild(v.s);hud()},1200)}
       if(c.i>.5){const wx=cl==='Viento'?1.8:1;for(const [ox,oy] of [[1,0],[-1,0],[0,1],[0,-1]]){const kk=(c.cx+ox)+(c.cy+oy)*1000;if(!FUEGO.has(kk)&&Math.random()<.035*c.i*wx*(llueve?.2:1)&&itemsCelda(c.cx+ox,c.cy+oy).length)FUEGO.set(kk,{cx:c.cx+ox,cy:c.cy+oy,i:.25,t:0,q:0})}}
       if(c.i<=0){FUEGO.delete(k);hollin(c.cx*FG2+16,c.cy*FG2+18)}}
     // te quemás si estás encima
@@ -1041,7 +1041,7 @@ const cartelCelda=new PIXI.Container();world.addChild(cartelCelda);{const g=new 
 function vender(){if(P.kg<=0)return;const v=Math.round(P.val);P.plata+=v;showCard('Vendiste '+P.kg.toFixed(1)+' kg','La Negra te pagó $'+fmt(v));pop('+$'+fmt(v),P.x,P.y-66);P.kg=0;P.val=0;P.mat={};P.matv={};sGet(6);hud();$i('venta').hidden=true}
 let xpAcc=0;function collect(list,isBig){if(Math.random()<.045*(1+rango('ojo')*.5))setTimeout(hallazgo,400);if(MAPA==='celda'&&Math.random()<(isBig?.2:(list.length>=3?.08:.03))){const it0=list[0];setTimeout(()=>spawnRat(it0.x,it0.y),350)}const now=performance.now();combo=now-lastHit<1600?combo+1:0;lastHit=now;const delay=P.act==='pickup'?.22:(P.act&&P.act.startsWith('use')?.14:0);
   list.forEach((it,k)=>{const w=peso(it.name,it.cat);P.kg+=w;const mc=matClase(it.name,it.cat);P.mat[mc]=(P.mat[mc]||0)+w;P.matv=P.matv||{};P.matv[mc]=(P.matv[mc]||0)+w*precio(it.name,it.cat)*(1+(ATR.cha.v-2)*.05)*(.9+P.rep/500);P.val+=w*precio(it.name,it.cat)*(1+(ATR.cha.v-2)*.05)*(.9+P.rep/500);xpAcc+=w*1.5;it.alive=false;(quitados[MAPA]||(quitados[MAPA]=new Set())).add(it.ix);left--;tot[it.cat]+=isBig?3:1;const mm=MANT.get(it.mk);if(mm){mm.n--;mm.s.alpha=Math.max(0,mm.n/mm.n0*1.2)}
-    it.s.parent.removeChild(it.s);fly.addChild(it.s);it.s.rotation=it.s.rotation||0;it.vx=(it.x-P.x)*2+(Math.random()-.5)*40;it.vz=120+Math.random()*80;it.z=0;it.t=-delay;active.push(it);
+    if(it.so){it.so.visible=false}it.s.parent.removeChild(it.s);fly.addChild(it.s);it.s.rotation=it.s.rotation||0;it.vx=(it.x-P.x)*2+(Math.random()-.5)*40;it.vz=120+Math.random()*80;it.z=0;it.t=-delay;active.push(it);
     if(k<4)setTimeout(()=>sMat(it.cat,0,it.name),(delay*1000)+k*55)});
   const n=list.length*(isBig?3:1);setTimeout(()=>pop('+'+n,P.x,P.y-66),delay*1000);
   if(list.length===1)showCard(list[0].name,MAT[list[0].cat]+(isBig?' · se desarmó en 3 partes':''));else showCard('+'+n+' de una',MAT[list[0].cat]+(combo>2?' · racha x'+(combo+1):''));hud()}
@@ -1094,7 +1094,7 @@ app.ticker.add(()=>{const dt=Math.min(.05,app.ticker.deltaMS/1000);P.ox=P.x;P.oy
   // energía y vida
   if((keys[' ']||keys['j']||holdHit||(holdM&&performance.now()>holdM&&drag&&!drag.moved&&(P.aimT=performance.now())))&&!P.act&&(P.w?wCd<=0:P.swing<=0&&P.en>=TOOLS[P.tool].cost))hit();
   if(xpAcc>=1){const n=Math.floor(xpAcc);xpAcc-=n;ganarXP('rec',n);pop('+'+n+' xp',P.x+14,P.y-50)}if(xpFlash>0){xpFlash-=dt;$i('xpb').classList.toggle('flash',xpFlash>0&&((xpFlash*6)|0)%2===0)}
-  updRats(dt);updNoche(dt);updMuni(dt);updChanga(dt);updComitiva(dt);updFuego(dt);{// un solo piromaníaco por día, día por medio, a una hora al azar
+  {const cl=T0.clima,k=Math.max(.12,(1-NA*.88)*(cl==='Nublado'||cl==='Lluvia'||cl==='Nevando'?.55:1));if(Math.abs((updRats.sk||1)-k)>.01){updRats.sk=k;for(const so of SOMB)so.alpha=k;shadow.alpha=k;for(const r of rats)if(r.sh)r.sh.alpha=k}}updRats(dt);updNoche(dt);updMuni(dt);updChanga(dt);updComitiva(dt);updFuego(dt);{// un solo piromaníaco por día, día por medio, a una hora al azar
   if(T0.dia%2===0&&NOCHE.piroDia!==T0.dia){if(NOCHE.piroHora==null||NOCHE.piroPara!==T0.dia){NOCHE.piroPara=T0.dia;NOCHE.piroHora=(9+Math.random()*12)*60}
     if(T0.min>=NOCHE.piroHora&&T0.min<23*60&&MAPA==='celda'&&!MX.indoor){const antes=rats.filter(r=>r.tipo==='piro').length;spawnPiro();if(rats.filter(r=>r.tipo==='piro').length>antes)NOCHE.piroDia=T0.dia}}}updMoto(dt);updFlecha();P.ratT=(P.ratT||45)-dt;if(P.ratT<=0&&MAPA==='celda'){P.ratT=60+Math.random()*60;const a=Math.random()*6.28;spawnRat(P.x+Math.cos(a)*90,P.y+Math.sin(a)*60)}updAmb(dt);updArmas(dt);
   updVeh(dt);updVenta();updGalpon();updLamparas();{const bd=$i('bdormir');const pd=puedeDormir();if(bd.hidden===pd)bd.hidden=!pd}updMapa(dt);revelar();updNpcs(dt);updTala(dt);
