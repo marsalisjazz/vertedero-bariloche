@@ -1,0 +1,9 @@
+{
+  // Juego del vertedero: sitio estático servido por un Worker de Cloudflare
+  "name": "vertedero-bariloche",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application"
+  }
+}
