@@ -568,7 +568,7 @@ function updNoche(dt){const m=T0.min,noche=m>=21*60||m<5.5*60,afuera=!MX.indoor&
   if(!noche&&NOCHE.ev&&m>=5.5*60&&m<12*60){if(NOCHE.afuera&&P.life>0){const L=nivelPJ(),xp=300+L*20;ganarXP('com',xp);P.plata+=10000;hud();const raro=[['balas',12],['cartuchos',8],['flechas',12],['pilas',4]][Math.random()*4|0];meter(raro[0],raro[1]);sSatis();banner('¡Sobreviviste la noche!','+'+xp+' de experiencia, $10.000 y '+raro[1]+' '+ITEM[raro[0]].n.toLowerCase())}NOCHE.afuera=false;for(const r of rats)if(r.tipo&&r.tipo!=='condor'&&r.st!=='dead'&&r.st!=='gone'){r.st='vete';r.t=0}if(NOCHE.ev)showCard('Amaneció','Los bichos se vuelven a esconder');NOCHE.ev=null;NOCHE.jefe=null}
   // cóndores de día en la celda
   if(!noche&&afuera&&MAPA==='celda'&&m>8*60&&m<18*60){NOCHE.cond-=dt;if(NOCHE.cond<=0){NOCHE.cond=120+Math.random()*120;if(!vivos('condor')){const p=puntoLejos(260,340);if(p){spawnBicho('condor',p[0],p[1]);showCard('Bajan los cóndores','Si lo matás perdés reputación. Esquivalo con E')}}}}}
-window.__piro=()=>{NOCHE.piroT=0};window.__fuego=(x,y)=>prender(x,y);window.__noche=(ev,h)=>{NOCHE.aviso=-1;T0.min=h||19.6*60;NOCHE.forzar=ev};
+window.__piro=()=>{T0.dia+=T0.dia%2;NOCHE.piroDia=-1;NOCHE.piroPara=T0.dia;NOCHE.piroHora=0};window.__fuego=(x,y)=>prender(x,y);window.__noche=(ev,h)=>{NOCHE.aviso=-1;T0.min=h||19.6*60;NOCHE.forzar=ev};
 // ---------- hora del día y clima ----------
 let NA=0;const CLIMAS=['Soleado','Nublado','Lluvia','Viento','Nevando','Nevado'];
 const T0={min:7*60,dia:1,clima:'Soleado'};const TEMP=['Primavera','Verano','Otoño','Invierno'],DIAS_TEMP=7;const temporada=()=>TEMP[((T0.dia-1)/DIAS_TEMP|0)%4];
@@ -981,7 +981,9 @@ app.ticker.add(()=>{const dt=Math.min(.05,app.ticker.deltaMS/1000);P.ox=P.x;P.oy
   // energía y vida
   if((keys[' ']||keys['j']||holdHit||(holdM&&performance.now()>holdM&&drag&&!drag.moved&&(P.aimT=performance.now())))&&!P.act&&(P.w?wCd<=0:P.swing<=0&&P.en>=TOOLS[P.tool].cost))hit();
   if(xpAcc>=1){const n=Math.floor(xpAcc);xpAcc-=n;ganarXP('rec',n);pop('+'+n+' xp',P.x+14,P.y-50)}if(xpFlash>0){xpFlash-=dt;$i('xpb').classList.toggle('flash',xpFlash>0&&((xpFlash*6)|0)%2===0)}
-  updRats(dt);updNoche(dt);updFuego(dt);if(MAPA==='celda'&&!MX.indoor){NOCHE.piroT=(NOCHE.piroT==null?150:NOCHE.piroT)-dt*(NA>.3?1.6:1);if(NOCHE.piroT<=0){NOCHE.piroT=180+Math.random()*140;spawnPiro()}}updMoto(dt);updFlecha();P.ratT=(P.ratT||45)-dt;if(P.ratT<=0&&MAPA==='celda'){P.ratT=60+Math.random()*60;const a=Math.random()*6.28;spawnRat(P.x+Math.cos(a)*90,P.y+Math.sin(a)*60)}updAmb(dt);updArmas(dt);
+  updRats(dt);updNoche(dt);updFuego(dt);{// un solo piromaníaco por día, día por medio, a una hora al azar
+  if(T0.dia%2===0&&NOCHE.piroDia!==T0.dia){if(NOCHE.piroHora==null||NOCHE.piroPara!==T0.dia){NOCHE.piroPara=T0.dia;NOCHE.piroHora=(9+Math.random()*12)*60}
+    if(T0.min>=NOCHE.piroHora&&T0.min<23*60&&MAPA==='celda'&&!MX.indoor){const antes=rats.filter(r=>r.tipo==='piro').length;spawnPiro();if(rats.filter(r=>r.tipo==='piro').length>antes)NOCHE.piroDia=T0.dia}}}updMoto(dt);updFlecha();P.ratT=(P.ratT||45)-dt;if(P.ratT<=0&&MAPA==='celda'){P.ratT=60+Math.random()*60;const a=Math.random()*6.28;spawnRat(P.x+Math.cos(a)*90,P.y+Math.sin(a)*60)}updAmb(dt);updArmas(dt);
   updVenta();updGalpon();updLamparas();{const bd=$i('bdormir');const pd=puedeDormir();if(bd.hidden===pd)bd.hidden=!pd}updMapa(dt);revelar();updNpcs(dt);updTala(dt);
   if(moving&&P.run){P.en-=15*dt;if(P.en<8)sAh()}else if(moving)P.en+=4*dt;else if(!P.act&&P.swing<=0)P.en+=11*dt;P.en=Math.max(0,Math.min(100,P.en));
   const inPool=MAPA==='celda'&&((P.x-POOL.x)/POOL.rx)**2+((P.y-POOL.y)/POOL.ry)**2<1;
