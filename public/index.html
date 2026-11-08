@@ -475,7 +475,7 @@ function updBicho(r,dt){const B=BICHO[r.tipo];r.t+=dt;if(r.hurt>0){r.hurt-=dt;r.
     if(r.st==='aggro'){
       if(r.tipo==='perro'&&lit&&d<70&&r.miedo){r.vx=-dx/d*B.v*.6;r.vy=-dy/d*B.v*.6;if(Math.random()<dt*.6)sGrr()}   // la antorcha los asusta
       else{const v=d>420?B.v*.5:B.v;const ang=Math.atan2(dy,dx)+(r.tipo==='perro'&&d>40?((r.ang%2)-1)*.9:0);r.vx=Math.cos(ang)*v;r.vy=Math.sin(ang)*v;if(d<B.rg){r.st='atk';r.t=0;r.golpe=0}}}
-    else if(r.st==='atk'){r.vx=r.vy=0;if(!r.golpe&&r.t>.3){r.golpe=1;if(d<B.rg+10){if(P.act==='esquive')showCard('¡Esquivado!','');else{const k=Math.max(2,Math.round(B.dmg*durezaNoche()*(1-rango('piel')*.2)*(1-(ATR.res.v-5)*.03)));P.life-=k;sBite();man.tint=0xff6060;setTimeout(()=>man.tint=0xffffff,200);showCard(r.tipo==='perro'?'¡Te mordió un perro!':'¡Te pegó el '+B.n.toLowerCase()+'!','−'+k+' de vida')}}if(B.jefe){camShake=.4;sPum()}}if(r.t>(B.jefe?1.1:.6)){r.st='aggro';r.t=0}}
+    else if(r.st==='atk'){r.vx=r.vy=0;if(!r.golpe&&r.t>.3){r.golpe=1;if(d<B.rg+10){if(P.act==='esquive')showCard('¡Esquivado!','');else{const k=Math.max(2,Math.round(B.dmg*(B.humano?1:durezaNoche())*(1-rango('piel')*.2)*(1-(ATR.res.v-5)*.03)));P.life-=k;sBite();man.tint=0xff6060;setTimeout(()=>man.tint=0xffffff,200);showCard(r.tipo==='perro'?'¡Te mordió un perro!':'¡Te pegó el '+B.n.toLowerCase()+'!','−'+k+' de vida')}}if(B.jefe){camShake=.4;sPum()}}if(r.t>(B.jefe?1.1:.6)){r.st='aggro';r.t=0}}
     else if(r.st==='flee'){r.vx=-dx/d*B.v*1.2;r.vy=-dy/d*B.v*1.2;if(r.t>2.2){r.st='aggro';r.t=0}}
     else if(r.st==='vete'){r.vx=-dx/d*B.v;r.vy=-dy/d*B.v;if(r.t>5)r.st='gone'}
     const nx=r.x+r.vx*dt,ny=r.y+r.vy*dt;if(walk(nx,ny)){r.x=nx;r.y=ny}else if(walk(nx,r.y))r.x=nx;else if(walk(r.x,ny))r.y=ny;
