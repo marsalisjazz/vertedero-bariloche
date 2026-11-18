@@ -1094,6 +1094,7 @@ function comer(it,pos){if(P.act)return;const ok=Math.random()<.7;it.c=(it.c||1)-
   if(ok){P.life=Math.min(100,P.life+20);showCard('Estaba bien','+20 de vida');sGet(3)}else{P.life-=10;P.en=Math.max(0,P.en-15);showCard('Estaba podrida','Te intoxicaste: −10 de vida');sAh(true)}renderInv()}
 function aplicarAct(){const it=INV.hot[INV.act];if(!it){setTool(0);return}const d=ITEM[it.id];if(d.t==='tool'){setTool(d.tool)}else if(d.t==='arma'){P.tool=0;equipar(it.id,true)}}
 function selHot(i){const it=INV.hot[i];if(it){const d=ITEM[it.id];if(d.t==='termo'){mate();return}if(d.t==='comida'){comer(it,['hot',i]);return}if(d.t!=='tool'&&d.t!=='arma'){showCard(d.n,d.d);return}}
+  if(P.monta&&P.monta!=='bobcat'){showCard('Vas manejando','Herramientas y armas quedan guardadas · bajate con F'+(coarse?' (botón Bajar)':''));sClick();return}
   INV.act=i;aplicarAct();const it2=INV.hot[i];if(it2){const d=ITEM[it2.id];showCard(d.n,d.d)}else showCard('Mano vacía','A puño limpio');renderInv()}
 function contar(id){let n=0;for(const z of ['hot','bag'])for(const it of INV[z])if(it&&it.id===id)n+=it.c||1;return n}
 function sacar(id,n){for(const z of ['bag','hot'])for(let i=0;i<INV[z].length&&n>0;i++){const it=INV[z][i];if(it&&it.id===id){const t=Math.min(n,it.c||1);it.c=(it.c||1)-t;n-=t;if(it.c<=0)INV[z][i]=null}}renderInv()}
@@ -1153,8 +1154,8 @@ const vehSp={};let vehCd=0;
 function darVeh(id){const V=VEHD[id];const pk=(MAPAS.base&&MAPAS.base.parking)||[P.x,P.y];V.dueño=true;V.map='base';V.x=pk[0]+(id==='bobcat'?120:id==='camion'?-220:0);V.y=pk[1];armarVeh();showCard('¡Tenés '+V.n+'!','Te espera en la planta, frente al galpón (está marcada en el Mapa). Acercate y apretá F'+(coarse?' o el botón Subir':'')+' para subir')}
 function armarVeh(){for(const id in VEHD){const V=VEHD[id];if(!vehSp[id]){if(!A[V.tex])continue;const s=new PIXI.Sprite(A[V.tex]);s.anchor.set(.5,.9);vehSp[id]=s}const s=vehSp[id];if(s.parent)s.parent.removeChild(s);if(V.dueño&&(V.map===MAPA||P.monta===id))tall.addChild(s)}}
 function vehCerca(){for(const id in VEHD){const V=VEHD[id];if(V.dueño&&V.map===MAPA&&!P.monta&&Math.hypot(P.x-V.x,P.y-V.y)<60)return id}return null}
-function subirBajar(){if(vehCd>0||P.mj)return;vehCd=.4;if(P.monta){const V=VEHD[P.monta];V.x=P.x;V.y=P.y;V.map=MAPA;showCard('Te bajaste',V.n+' queda acá · nafta '+V.nafta.toFixed(1)+' L');P.monta=null;man.visible=true;if(vehSp.moto)vehSp.moto.visible=true;aplicarAtr();armarVeh();return}
-  const id=vehCerca();if(!id)return;if(MX.indoor){showCard('Acá no','Los vehículos quedan afuera');return}P.monta=id;P.w=null;man.visible=!!(id==='moto'&&AN.walk_moto);aplicarAtr();armarVeh();if(id==='moto'&&AN.walk_moto&&vehSp.moto)vehSp.moto.visible=false;const V=VEHD[id];showCard('Subiste a la '+V.n,'Nafta '+V.nafta.toFixed(1)+' L de '+V.tan+(id==='bobcat'?' · Espacio para el palazo':'')+' · R carga nafta · F para bajar')}
+function subirBajar(){if(vehCd>0||P.mj)return;vehCd=.4;if(P.monta){const V=VEHD[P.monta];V.x=P.x;V.y=P.y;V.map=MAPA;showCard('Te bajaste',V.n+' queda acá · nafta '+V.nafta.toFixed(1)+' L');P.monta=null;man.visible=true;if(vehSp.moto)vehSp.moto.visible=true;aplicarAct();renderInv();aplicarAtr();armarVeh();return}
+  const id=vehCerca();if(!id)return;if(MX.indoor){showCard('Acá no','Los vehículos quedan afuera');return}P.monta=id;P.w=null;setTool(0);try{const ct=carroTipo();if(ct&&!PARK){parkMap=MAPA;const d=DV[P.dir]||[0,1];PARK={x:P.x-d[0]*16+(d[1]?-16:0),y:P.y+4,tipo:ct,flip:d[0]<0}}}catch(_e){}renderInv();man.visible=!!(id==='moto'&&AN.walk_moto);aplicarAtr();armarVeh();if(id==='moto'&&AN.walk_moto&&vehSp.moto)vehSp.moto.visible=false;const V=VEHD[id];showCard('Subiste a la '+V.n,'Nafta '+V.nafta.toFixed(1)+' L de '+V.tan+(id==='bobcat'?' · Espacio para el palazo':'')+' · R carga nafta · F para bajar')}
 function cargarNafta(){const id=P.monta||vehCerca();if(!id)return false;const V=VEHD[id];const falta=Math.floor(V.tan-V.nafta);const hay=contar('nafta');if(falta<1){showCard('Tanque lleno','');return true}if(!hay){showCard('No tenés nafta','Piromaníacos, basura, premios de la noche o el mostrador');return true}const n=Math.min(falta,hay);sacar('nafta',n);V.nafta+=n;showCard('Cargaste '+n+' L',V.n+': '+V.nafta.toFixed(1)+' de '+V.tan+' L');sGet(4);return true}
 let palT=0;function palazo(){const V=VEHD.bobcat;if(palT>0)return;if(V.nafta<V.palazo){showCard('Sin nafta','Cargá con R');return}palT=V.cad;V.nafta-=V.palazo;const [dx,dy]=DV[P.dir];const hx=P.x+dx*44,hy=P.y-4+dy*30;
   const near=query(hx,hy,V.r).filter(i=>i.alive&&!tapado(i)).slice(0,60);camShake=.15;sPum();for(let i=0;i<14;i++)astillas.push({x:hx+(Math.random()-.5)*V.r,y:hy+(Math.random()-.5)*V.r*.6,vx:(Math.random()-.5)*60,vy:-40-Math.random()*40,t:0,c:0x8a7050});
@@ -1415,11 +1416,11 @@ function vidaUpd(dt){if(VIDA.map!==MAPA)vidaArmar();if(!humoG.parent&&fx){fx.add
 
 // el carro queda estacionado cuando sacás algo en la mano (herramienta, arma, antorcha) o tomás mate; lo volvés a agarrar acercándote con las manos libres
 let PARK=null,parkSp=null,parkMap=null;const PARK_ESC={changuito:.62,carretilla:.6,bici:.75};
-function carroTipo(){return P.monta?null:(NIVA.bici?'bici':NIVA.changuito?'changuito':NIVA.carretilla?'carretilla':null)}
-function updCarro(libre){const tipo=carroTipo();if(!tipo||enCasa||(MX&&MX.indoor)){if(parkSp)parkSp.visible=false;return}
+function carroTipo(){return (NIVA.bici?'bici':NIVA.changuito?'changuito':NIVA.carretilla?'carretilla':null)}
+function updCarro(libre){const tipo=carroTipo();if(!tipo||enCasa||(MX&&MX.indoor)||(P.monta&&!PARK)){if(parkSp)parkSp.visible=false;return}
  if(parkMap!==MAPA){PARK=null;parkMap=MAPA}
- if(!PARK&&!libre){const d=DV[P.dir]||[0,1];PARK={x:P.x+d[0]*16+(d[1]?10:0),y:P.y+d[1]*10+2,tipo,flip:d[0]<0}}
- if(PARK&&libre&&Math.hypot(P.x-PARK.x,P.y-PARK.y)<60){PARK=null}
+ if(!PARK&&!libre&&!P.monta){const d=DV[P.dir]||[0,1];PARK={x:P.x+d[0]*16+(d[1]?10:0),y:P.y+d[1]*10+2,tipo,flip:d[0]<0}}
+ if(PARK&&libre&&!P.monta&&Math.hypot(P.x-PARK.x,P.y-PARK.y)<60){PARK=null}
  if(PARK){if(!parkSp||parkSp.tipo!==PARK.tipo){const src=window.__SRC&&window.__SRC['ic_tt_'+PARK.tipo+'.png'];if(!src)return;if(parkSp&&parkSp.parent)parkSp.parent.removeChild(parkSp);parkSp=new PIXI.Sprite(PIXI.Texture.from(src));parkSp.tipo=PARK.tipo;parkSp.anchor.set(.5,.95)}
   if(!parkSp.parent)tall.addChild(parkSp);parkSp.visible=true;const k=PARK_ESC[PARK.tipo]||.6;parkSp.scale.set(PARK.flip?-k:k,k);parkSp.x=Math.round(PARK.x);parkSp.y=Math.round(PARK.y);parkSp.zIndex=PARK.y}
  else if(parkSp)parkSp.visible=false}
