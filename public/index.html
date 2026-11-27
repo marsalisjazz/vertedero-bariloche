@@ -135,7 +135,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);paddi
 [hidden]{display:none!important}
 @media (max-width:560px){.tienda.perso{grid-template-columns:1fr}.perso #hab{grid-template-columns:1fr}}
 
-/* ===== TEMA UNIFICADO: 2 letras (VT323 títulos/números, Pixelify textos), un marco, 2 botones ===== */
+/* ===== TEMA UNIFICADO: una sola letra (VT323), un marco, 2 botones ===== */
 :root{--bg:#151715;--panel:rgba(18,20,19,.93);--line:#454b46;--hi:#323733;--fg:#eef0e8;--muted:#a7ada2;--accent:#e2ec6e;--oro:#ffcf6a;--osc:#2a1208;--life:#e2584a;--energy:#8fd05a;
  --disp:"VT323",ui-monospace,monospace;--body:"VT323",ui-monospace,monospace;--t1:clamp(24px,2.7cqw,32px);--t2:clamp(19px,2cqw,23px);--t3:clamp(17px,1.7cqw,20px);--t4:clamp(15px,1.45cqw,17px)}
 .stage *{font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0}
@@ -260,7 +260,7 @@ body{background:var(--bg)}
 #venta button.vtodo:hover{filter:brightness(1.06)}#venta button.vtodo:active{transform:translateY(3px);box-shadow:0 1px 0 #2a1208}
 #venta .fila button{font-family:VT323,monospace;font-size:22px;text-transform:none;letter-spacing:.02em;padding:6px 14px;font-weight:400}
 </style>
-<div class="stage" id="st"><div id="portada" hidden><div class="tit"><b>VERTEDERO</b><small>BARILOCHE</small></div><div class="bts" id="pbts"></div><div style="position:absolute;left:12px;bottom:8px;font:16px VT323,monospace;color:#fff3d6aa">v0.110 · 27/11/2026</div></div>
+<div class="stage" id="st"><div id="portada" hidden><div class="tit"><b>VERTEDERO</b><small>BARILOCHE</small></div><div class="bts" id="pbts"></div><div style="position:absolute;left:12px;bottom:8px;font:16px VT323,monospace;color:#fff3d6aa">v0.111 · 27/11/2026</div></div>
     <div class="p clockp"><span id="clock">Día 1 · 07:00</span><b id="plata">$0</b></div><div class="p objp" id="objp"><small id="basu" class="basu"></small></div>
     <div class="p luzp tile" id="luzp" title="Luz: antorcha o linterna"><div class="slot" id="luz" data-zone="luz" data-i="0"></div></div>
     <div class="p bagb tile" id="bagbtn" role="button" tabindex="0"><svg width="24" height="24" viewBox="0 0 13 13" shape-rendering="crispEdges" aria-hidden="true"><rect x="4" y="1" width="5" height="2" fill="#7a4f26"/><rect x="2" y="3" width="9" height="9" fill="#a0683a"/><rect x="3" y="7" width="7" height="4" fill="#7a4f26"/><rect x="6" y="8" width="1" height="1" fill="#d9e36a"/><rect x="2" y="3" width="9" height="1" fill="#c48a52"/></svg><span>Mochila<small id="bagn">I</small></span></div>
@@ -1033,7 +1033,7 @@ function biciRueda(dt){if(!AC)return;const v=P.monta==='bici'&&biciRueda.px!=nul
  const k=Math.min(1,v/160);biciSnd.g.gain.setTargetAtTime(muted?0:k*.45,AC.currentTime,.12);biciSnd.s.playbackRate.value=.75+.45*k}
 // carteles de la planta: "A LA CELDA" en el camino
 let CARTB=[];function cartelesBase(){for(const c of CARTB)if(c.parent)c.parent.removeChild(c);CARTB=[];if(MAPA!=='base'||!PTX.x_flecha)return;
- for(const [x,y] of [[1440,820],[2350,760],[3600,760]]){const g=new PIXI.Container();g.x=x;g.y=y;g.zIndex=y;const sp=new PIXI.Sprite(PTX.x_flecha);sp.anchor.set(.5,1);sp.scale.x=-1;g.addChild(sp);
+ for(const [x,y] of [[1440,820],[3600,760]]){const g=new PIXI.Container();g.x=x;g.y=y;g.zIndex=y;const sp=new PIXI.Sprite(PTX.x_flecha);sp.anchor.set(.5,1);sp.scale.x=-1;g.addChild(sp);
   const t=new PIXI.Text('A LA CELDA',{fontFamily:'VT323, monospace',fontSize:14,fill:0xf3e2b8,stroke:0x2a1a0a,strokeThickness:3});t.resolution=3;t.anchor.set(.5);t.x=-2;t.y=-PTX.x_flecha.height*.62;g.addChild(t);tall.addChild(g);CARTB.push(g)}}
 // ---------- planta de reciclaje: prensa en la celda, cinta en el galpón, galponcito afuera; objetivo: limpiar la celda ----------
 const PRENSA_C={x:150,y:958};const CINTA_B={x:1226,y:646};
@@ -1133,7 +1133,7 @@ function fogonazo(x,y,ux,uy,grande){const k=grande?1.25:.9;try{fxSp('golpe'+((Ma
 // los bichos especiales (piromaníaco) siguen ahí si salís del mapa y volvés el mismo día
 const QUEDA={};let MAPA_ANT=null;
 function volverQuedan(){const L=QUEDA[MAPA];if(!L||!L.length)return;QUEDA[MAPA]=[];for(const q of L){if(q.dia!==T0.dia)continue;const r=spawnBicho(q.t,q.x,q.y);if(!r)continue;r.hp=q.hp;r.st=q.st==='aggro'?'va':q.st;r.tx=q.tx;r.ty=q.ty}}
-const VERSION='v0.110 · 27/11/2026';
+const VERSION='v0.111 · 27/11/2026';
 // tormenta: relámpago que ilumina la pantalla de golpe
 let rayoT=6;function rayo(){const f=document.createElement('div');f.style.cssText='position:absolute;inset:0;background:#eef4ff;opacity:.75;pointer-events:none;z-index:8;transition:opacity .5s';$i('st').appendChild(f);setTimeout(()=>{f.style.opacity=0},70);setTimeout(()=>{f.style.opacity=.45;setTimeout(()=>f.style.opacity=0,60)},180);setTimeout(()=>f.remove(),900);camShake=Math.max(camShake,.12);try{loadSnd();setTimeout(()=>play('arbol_cae',.35,.55),700+Math.random()*600)}catch(_e){}}
 // ---------- el Gitano ----------
